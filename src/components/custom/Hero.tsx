@@ -1,5 +1,5 @@
 import React from "react";
-import heroImage from "../../../public/undraw_engineering-team_13ax.svg";
+import heroImage from "/undraw_engineering-team_13ax.svg";
 import { Button } from "../ui/button";
 
 const Hero = () => {
