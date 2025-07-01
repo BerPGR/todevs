@@ -6,7 +6,7 @@ const Hero = () => {
   return (
     <div className="flex items-center container mx-auto">
       <div className="flex flex-col gap-10">
-        <h1 className="text-white text-6xl pr-40">Construa projetos incríveis juntos!</h1>
+        <h1 className="text-white text-6xl pr-40 font-semibold">Construa projetos incríveis juntos!</h1>
         <p className="text-white font-light text-2xl pr-20">Crie um projeto, procure colaboradores e expanda seu portfólio</p>
         <div className="flex items-center gap-10">
           <Button className="p-6 text-md" variant="default">Criar Projeto</Button>
