@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import NavBar from "../../components/custom/NavBar";
 import Hero from "../../components/custom/Hero";
 import HowItWorks from "../../components/custom/HowItWorks";
@@ -23,11 +23,12 @@ import {
   CommandGroup,
   CommandItem,
 } from "cmdk";
-import { cn } from "../../lib/utils";
 import { Command } from "../../components/ui/command";
 import { Badge } from "../../components/ui/badge";
 import { X } from "lucide-react";
 import CardFeed from "../../components/custom/Feed/CardFeed";
+import { Card, CardContent } from "../../components/ui/card";
+import { Button } from "../../components/ui/button";
 
 type Category = {
   label: string;
@@ -80,6 +81,8 @@ const feedCards = [
 const Home = () => {
   const [open, setOpen] = React.useState(false);
   const [selected, setSelected] = React.useState<string[]>([]);
+  const [search, setSearch] = useState<string>("");
+  const [filteredProjects, setFilteredProjects] = useState([...feedCards]);
 
   const toggleValue = (value: string) => {
     setSelected((prev) =>
@@ -90,26 +93,41 @@ const Home = () => {
   const removeValue = (value: string) =>
     setSelected((prev) => prev.filter((v) => v !== value));
 
+  const searchProject = (value: string) => {
+    if (value === "") setFilteredProjects(feedCards);
+
+    const filteredProjects = feedCards.filter((project) =>
+      project.title.toLowerCase().includes(value.toLowerCase())
+    );
+
+    setFilteredProjects(filteredProjects);
+  };
+
   return (
     <div className="min-h-screen bg-[#0D1117] p-10">
       <NavBar />
       <Hero />
       <HowItWorks />
-      <div className="flex items-start container mx-auto gap-20 mt-20">
+      <form
+        onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+          e.preventDefault()
+          searchProject(search)}}
+        className="flex items-start container mx-auto gap-8 mt-20"
+      >
         <Input
           type="text"
           placeholder="Procurar projeto..."
-          className="w-1/3"
+          value={search}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
+          className="w-1/3 p-6"
         />
         <div className="w-1/3">
           <Select>
-            <SelectTrigger className="w-full">
+            <SelectTrigger className="w-full text-white p-6">
               <SelectValue placeholder="Selecione uma categoria" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem className="text-white" value="portfolio">
-                Portfólio
-              </SelectItem>
+              <SelectItem value="portfolio">Portfólio</SelectItem>
               <SelectItem value="freelance">Freelance</SelectItem>
               <SelectItem value="algo ai">Algo ai</SelectItem>
             </SelectContent>
@@ -118,12 +136,7 @@ const Home = () => {
         <div className="w-1/3">
           {/* Campo que abre o popover */}
           <Popover open={open} onOpenChange={setOpen}>
-            <PopoverTrigger
-              className={cn(
-                "w-full rounded-md border bg-background px-3 py-2 text-left text-sm",
-                !selected.length && "text-muted-foreground"
-              )}
-            >
+            <PopoverTrigger className="w-full rounded-md border bg-background text-left text-sm p-4">
               {selected.length
                 ? `Selecionadas: ${selected.length}`
                 : "Selecione categorias"}
@@ -177,15 +190,49 @@ const Home = () => {
             </div>
           )}
         </div>
-      </div>
+        <Button type="submit" className="text-md p-7">
+          Procurar
+        </Button>
+      </form>
 
       <div className="container mx-auto mt-20">
         <h1 className="text-4xl text-white font-semibold pb-10">Feed</h1>
         <div className="grid grid-cols-2 grid-rows-2 gap-5">
-          {feedCards.map((card) => (
-            <CardFeed title={card.title} creator={card.creator} role={card.role} stack={card.stack} status={card.status} applications={card.applications}/>
+          {filteredProjects.map((card) => (
+            <CardFeed key={card.title}
+              title={card.title}
+              creator={card.creator}
+              role={card.role}
+              stack={card.stack}
+              status={card.status}
+              applications={card.applications}
+            />
           ))}
         </div>
+      </div>
+
+      <div className="container mx-auto mt-20">
+        <Card className="w-full p-4 bg-[#14171C] text-white">
+          <CardContent>
+            <div className="flex items-center justify-between">
+              <div className="flex flex-col items-start">
+                <h1 className="text-3xl text-white font-semibold ">
+                  Porque ajudar a construir projetos?
+                </h1>
+                <span className="font-light mt-2">
+                  "É uma ótima maneira de ganhar experiência e melhorar seu
+                  portfólio!"
+                </span>
+              </div>
+              <div className="flex flex-col items-center">
+                <h1 className="text-5xl text-[#6aa17f] font-semibold">
+                  12,584
+                </h1>
+                <span className="font-light mt-2">Projetos construídos</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
