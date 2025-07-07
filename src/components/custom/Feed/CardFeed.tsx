@@ -8,8 +8,10 @@ import {
   CardTitle,
 } from "../../ui/card";
 import { Badge } from "../../ui/badge";
+import { useNavigate } from "react-router-dom";
 
 interface CardFeedProps {
+  id: number
   title: string;
   creator: string;
   role: string;
@@ -19,6 +21,7 @@ interface CardFeedProps {
 }
 
 const CardFeed = ({
+  id,
   title,
   creator,
   role,
@@ -26,8 +29,12 @@ const CardFeed = ({
   status,
   applications,
 }: CardFeedProps) => {
+  const navigate = useNavigate()
+
   return (
-    <Card className="cursor-pointer bg-[#14171C] text-white">
+    <Card 
+      onClick={() => navigate(`/project/${id}`)}
+    className="cursor-pointer bg-[#14171C] text-white">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         <CardDescription>{creator}</CardDescription>

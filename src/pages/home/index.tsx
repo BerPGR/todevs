@@ -45,6 +45,7 @@ const CATEGORIES: Category[] = [
 
 const feedCards = [
   {
+    id: 1,
     title: "E-Commerce Platform",
     creator: "Jane Doe",
     role: "Front-End Developer",
@@ -53,6 +54,7 @@ const feedCards = [
     applications: 3,
   },
   {
+    id: 2,
     title: "Social Media Dashboard",
     creator: "John Smith",
     role: "UI/UX Designer",
@@ -61,6 +63,7 @@ const feedCards = [
     applications: 5,
   },
   {
+    id: 3,
     title: "Travel Booking App",
     creator: "Seeeh A.",
     role: "Flutter Developer",
@@ -69,6 +72,7 @@ const feedCards = [
     applications: 12,
   },
   {
+    id: 4,
     title: "Personal Blog Site",
     creator: "Alox R.",
     role: "VueJS Devleoper",
@@ -199,7 +203,8 @@ const Home = () => {
         <h1 className="text-4xl text-white font-semibold pb-10">Feed</h1>
         <div className="grid grid-cols-2 grid-rows-2 gap-5">
           {filteredProjects.map((card) => (
-            <CardFeed key={card.title}
+            <CardFeed key={card.id}
+              id={card.id}
               title={card.title}
               creator={card.creator}
               role={card.role}
